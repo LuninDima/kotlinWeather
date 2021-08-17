@@ -33,5 +33,6 @@ class MainFragment : Fragment() {
         val observer = Observer<Any>{
             Toast.makeText(context,"Тест", Toast.LENGTH_LONG).show()}
         viewModel.getLiveData().observe(viewLifecycleOwner, observer)
+        viewModel.getDataFromLocalSource()
     }
 }
