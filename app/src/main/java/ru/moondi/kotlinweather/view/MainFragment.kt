@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import ru.moondi.kotlinweather.R
+import ru.moondi.kotlinweather.databinding.MainFragmentBinding
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
 
     lateinit var viewModel: MainViewModel
+    var _binding: MainFragmentBinding? = null
+    val binding get() = _binding!!
 
     companion object {
         fun newInstance() = MainFragment()
@@ -24,14 +27,16 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.main_fragment, container, false)
+        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        val observer = Observer<Any>{
-            Toast.makeText(context,"Тест", Toast.LENGTH_LONG).show()}
+        val observer = Observer<Any> {
+            Toast.makeText(context, "Тест", Toast.LENGTH_LONG).show()
+        }
         viewModel.getLiveData().observe(viewLifecycleOwner, observer)
         viewModel.getDataFromLocalSource()
     }
