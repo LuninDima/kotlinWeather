@@ -36,24 +36,27 @@ class MainFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-//        val observer = Observer<Any> {
-//            Toast.makeText(context, "Тест", Toast.LENGTH_LONG).show()
-//        }
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getWeather()
     }
 
     private fun renderData(appState: AppState) {
         when (appState) {
-            is AppState.Error -> TODO("ошибка, невозможно получить данные")
-            is AppState.Succes -> {
-                val weatherData = appState.dataWeather
-                binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG)
-                setData(weatherData)
+            is AppState.Error -> {
+                Toast.makeText(context, "ошибка, данные не найдены", Toast.LENGTH_LONG).show()
             }
-            AppState.Loading -> {
-                binding.loadingLayout.visibility = View.VISIBLE
+            is AppState.Succes -> {
+                Toast.makeText(context, "Загрузка прошла успешно", Toast.LENGTH_LONG).show()
+
+                 val weatherData = appState.dataWeather
+                  binding.loadingLayout.visibility = View.GONE
+                  Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG)
+                  setData(weatherData)
+            }
+           is AppState.Loading -> {
+               Toast.makeText(context, "Загрузка данных", Toast.LENGTH_LONG).show()
+               binding.loadingLayout.visibility = View.VISIBLE
+
             }
 
         }
