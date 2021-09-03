@@ -12,23 +12,21 @@ import kotlin.random.Random
 
 class MainViewModel(
     private val liveDataObserver: MutableLiveData<AppState> = MutableLiveData(),
-    val repositrory: Repositrory = RepositoryImpl()
+    private val repositroryImpl: Repositrory = RepositoryImpl()
 ) : ViewModel() {
     fun getLiveData() = liveDataObserver
-    fun getWeather() = getDataFromLocalSource()
+    fun getWeatherFromLocalSourceRus() = getDataFromLocalSource(isRussian = true)
 
-    fun getDataFromLocalSource() {
-        val rand: Int = Random.nextInt(0, 3)
-        when (rand) {
-            0 -> {
-                TODO("error")
-            }
-            1 -> {
-                liveDataObserver.postValue(AppState.Loading)
-            }
-            2 -> {
-                liveDataObserver.postValue(AppState.Succes(repositrory.getWeatherFromLocale()))
-            }
-        }
+    fun getDataFromLocalSource(isRussian: Boolean) {
+        liveDataObserver.value = AppState.Loading
+        Thread {
+            sleep(5000)
+            liveDataObserver.postValue(
+                AppState.Succes(
+                    if (isRussian) repositroryImpl.getWeatherFromLocalStorageRus()
+                    else repositroryImpl.getWeatherFromLocalStorageWorld()
+                )
+            )
+        }.start()
     }
 }
