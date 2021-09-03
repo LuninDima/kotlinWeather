@@ -46,7 +46,7 @@ class MainFragment : Fragment() {
                 Toast.makeText(context, "ошибка, данные не найдены", Toast.LENGTH_LONG).show()
             }
             is AppState.Succes -> {
-                Toast.makeText(context, "Загрузка прошла успешно", Toast.LENGTH_LONG).show()
+
 
                  val weatherData = appState.dataWeather
                   binding.loadingLayout.visibility = View.GONE
