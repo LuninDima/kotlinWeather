@@ -2,7 +2,6 @@ package ru.moondi.kotlinweather.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.ActivityMainBinding
 
@@ -14,7 +13,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_conteiner, MainFragment.newInstance()).commit()
+                .replace(R.id.fragment_conteiner, DetailsFragment.newInstance()).commit()
         }
     }
 }

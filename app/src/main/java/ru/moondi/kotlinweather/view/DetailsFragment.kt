@@ -1,3 +1,4 @@
+/*
 package ru.moondi.kotlinweather.view
 
 import android.os.Bundle
@@ -14,14 +15,14 @@ import ru.moondi.kotlinweather.databinding.MainFragmentBinding
 import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
-class MainFragment : Fragment() {
+class DetailsFragment : Fragment() {
 
     lateinit var viewModel: MainViewModel
     var _binding: MainFragmentBinding? = null
     val binding get() = _binding!!
 
     companion object {
-        fun newInstance() = MainFragment()
+        fun newInstance() = DetailsFragment()
     }
 
     override fun onCreateView(
@@ -72,4 +73,4 @@ class MainFragment : Fragment() {
         binding.temperatureValue.text = weatherData.temperature.toString()
         binding.feelsLikeValue.text = weatherData.feelsLike.toString()
     }
-}
+}*/
