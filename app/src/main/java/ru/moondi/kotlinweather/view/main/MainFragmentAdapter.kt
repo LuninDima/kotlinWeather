@@ -1,4 +1,4 @@
-package ru.moondi.kotlinweather.view
+package ru.moondi.kotlinweather.view.main
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,8 +7,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import ru.moondi.kotlinweather.R
-import ru.moondi.kotlinweather.viewmodel.MainViewModel
-import java.nio.file.WatchEvent
+import ru.moondi.kotlinweather.view.Weather
 
 class MainFragmentAdapter : RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
     private var weatherData: List<Weather> = listOf()

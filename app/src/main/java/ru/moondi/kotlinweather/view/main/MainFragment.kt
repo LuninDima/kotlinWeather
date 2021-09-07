@@ -1,4 +1,4 @@
-package ru.moondi.kotlinweather.view
+package ru.moondi.kotlinweather.view.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
