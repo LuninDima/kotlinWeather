@@ -1,10 +1,21 @@
 package ru.moondi.kotlinweather.view
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
 class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 0,
     val feelsLike: Int = 0
-)
+): Parcelable
+
+@Parcelize
+data class City(
+    val name: String,
+    val lat: Double,
+    val long: Double,
+) : Parcelable
 
 fun getDefaultCity() = City("Москва", 55.755826, 37.617299900000035)
 
@@ -37,8 +48,4 @@ fun getRussianCities(): List<Weather>{
 
     )
 }
-data class City(
-    val name: String,
-    val lat: Double,
-    val long: Double,
-)
+

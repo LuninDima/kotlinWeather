@@ -1,4 +1,4 @@
-/*
+
 package ru.moondi.kotlinweather.view
 
 import android.os.Bundle
@@ -11,30 +11,54 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.moondi.kotlinweather.R
-import ru.moondi.kotlinweather.databinding.MainFragmentBinding
+import ru.moondi.kotlinweather.databinding.FragmentDetailsBinding
 import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
 class DetailsFragment : Fragment() {
 
     lateinit var viewModel: MainViewModel
-    var _binding: MainFragmentBinding? = null
-    val binding get() = _binding!!
-
-    companion object {
-        fun newInstance() = DetailsFragment()
-    }
+    private var _binding: FragmentDetailsBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = MainFragmentBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val weather = arguments?.getParcelable<Weather>(BUNDLE_EXTRA)
+        if (weather != null) {
+            val city = weather.city
+            binding.cityName.text = city.name
+            binding.cityCoordinates.text = String.format(
+                getString(R.string.city_coordinates),
+                city.lat.toString(),
+                city.long.toString()
+            )
+            binding.temperatureValue.text = weather.temperature.toString()
+            binding.feelsLikeValue.text = weather.feelsLike.toString()
+
+        }
+
+    }
+
+    companion object {
+        const val BUNDLE_EXTRA = "weather"
+        fun newInstance(bundle: Bundle): DetailsFragment {
+            val fragment = DetailsFragment()
+            fragment.arguments = bundle
+            return fragment
+        }
+    }
+}
+
+ /*   override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
@@ -72,5 +96,4 @@ class DetailsFragment : Fragment() {
         )
         binding.temperatureValue.text = weatherData.temperature.toString()
         binding.feelsLikeValue.text = weatherData.feelsLike.toString()
-    }
-}*/
+    }*/
