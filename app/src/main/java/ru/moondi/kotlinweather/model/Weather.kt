@@ -8,7 +8,7 @@ class Weather(
     val city: City = getDefaultCity(),
     val temperature: Int = 0,
     val feelsLike: Int = 0
-): Parcelable
+) : Parcelable
 
 @Parcelize
 data class City(
@@ -33,7 +33,8 @@ fun getWorldCities(): List<Weather> {
         Weather(City("Пекин", 39.90419989999999, 116.40739630000007), 19, 20)
     )
 }
-fun getRussianCities(): List<Weather>{
+
+fun getRussianCities(): List<Weather> {
     return listOf(
         Weather(City("Москва", 55.755826, 37.617299900000035), 1, 2),
         Weather(City("Санкт-Петербург", 59.9342802, 30.335098600000038), 3, 3),

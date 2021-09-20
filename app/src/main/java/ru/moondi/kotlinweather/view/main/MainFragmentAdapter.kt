@@ -9,8 +9,15 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.view.Weather
 
-class MainFragmentAdapter : RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
+
+class MainFragmentAdapter(
+    private var onItemViewClickListener:
+    MainFragment.OnItemViewClickListener?
+) :
+    RecyclerView.Adapter<MainFragmentAdapter.MainViewHolder>() {
+
     private var weatherData: List<Weather> = listOf()
+
     fun setWeather(data: List<Weather>) {
         weatherData = data
         notifyDataSetChanged()
@@ -35,16 +42,17 @@ class MainFragmentAdapter : RecyclerView.Adapter<MainFragmentAdapter.MainViewHol
         return weatherData.size
     }
 
+    fun removeListener() {
+        onItemViewClickListener = null
+    }
+
+
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: Weather) {
             itemView.findViewById<TextView>(R.id.mainFragmentRecyclerItemTextView).text =
                 weather.city.name
             itemView.setOnClickListener {
-                Toast.makeText(
-                    itemView.context,
-                    weather.city.name,
-                    Toast.LENGTH_LONG
-                ).show()
+                onItemViewClickListener?.onItemViewClick(weather)
             }
         }
     }

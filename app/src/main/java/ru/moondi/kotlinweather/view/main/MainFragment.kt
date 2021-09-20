@@ -10,15 +10,29 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainBinding
+import ru.moondi.kotlinweather.view.DetailsFragment
+import ru.moondi.kotlinweather.view.Weather
 import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
-class MainFragment: Fragment() {
+class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
-    private  val binding get() = _binding!!
-    private  lateinit var viewModel: MainViewModel
-    private  val adapter = MainFragmentAdapter()
-    private  var isDataSetRus: Boolean = true
+    private val binding get() = _binding!!
+
+    private lateinit var viewModel: MainViewModel
+    private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
+        override fun onItemViewClick(weather: Weather) {
+            val manager = activity?.supportFragmentManager
+            if (manager != null) {
+                val bundle = Bundle()
+                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+                manager.beginTransaction()
+                    .add(R.id.fragment_conteiner, DetailsFragment.newInstance(bundle))
+                    .addToBackStack("").commitAllowingStateLoss()
+            }
+        }
+    })
+    private var isDataSetRus: Boolean = true
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -39,32 +53,52 @@ class MainFragment: Fragment() {
     }
 
     private fun changeWeatherDataSet() {
-        if(isDataSetRus) {
+        if (isDataSetRus) {
             viewModel.getWeatherFromLocalSourceWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
-        } else{viewModel.getWeatherFromLocalSourceRus()
+        } else {
+            viewModel.getWeatherFromLocalSourceRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
         }
         isDataSetRus = !isDataSetRus
     }
 
-    private  fun renderData(appState: AppState){
-        when(appState){
+    private fun renderData(appState: AppState) {
+        when (appState) {
             is AppState.Succes -> {
-                binding.mainFragmentLoadingLayout.visibility =View.GONE
+                binding.mainFragmentLoadingLayout.visibility = View.GONE
                 adapter.setWeather(appState.dataWeather)
             }
-            is AppState.Loading ->{
+            is AppState.Loading -> {
                 binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
             }
-            is AppState.Error ->{
+            is AppState.Error -> {
                 binding.mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainFragmentFAB, getString(R.string.error), Snackbar.LENGTH_INDEFINITE).setAction(getString(R.string.reload)) {
-                    viewModel.getWeatherFromLocalSourceRus()}.show()
-                }
+                Snackbar.make(
+                    binding.mainFragmentFAB,
+                    getString(R.string.error),
+                    Snackbar.LENGTH_INDEFINITE
+                ).setAction(getString(R.string.reload)) {
+                    viewModel.getWeatherFromLocalSourceRus()
+                }.show()
             }
         }
-    companion object{
+
+
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        adapter.removeListener()
+        super.onDestroy()
+    }
+
+    interface OnItemViewClickListener {
+        fun onItemViewClick(weather: Weather)
+    }
+
+    companion object {
         fun newInstance() = MainFragment()
     }
-    }
+}
+

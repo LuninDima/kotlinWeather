@@ -1,4 +1,3 @@
-
 package ru.moondi.kotlinweather.view
 
 import android.os.Bundle
@@ -58,42 +57,42 @@ class DetailsFragment : Fragment() {
     }
 }
 
- /*   override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-        viewModel.getWeather()
-    }
+/*   override fun onActivityCreated(savedInstanceState: Bundle?) {
+       super.onActivityCreated(savedInstanceState)
+       viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+       viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
+       viewModel.getWeather()
+   }
 
-    private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Error -> {
-                Toast.makeText(context, "ошибка, данные не найдены", Toast.LENGTH_LONG).show()
-            }
-            is AppState.Succes -> {
+   private fun renderData(appState: AppState) {
+       when (appState) {
+           is AppState.Error -> {
+               Toast.makeText(context, "ошибка, данные не найдены", Toast.LENGTH_LONG).show()
+           }
+           is AppState.Succes -> {
 
 
-                 val weatherData = appState.dataWeather
-                  binding.loadingLayout.visibility = View.GONE
-                  Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG)
-                  setData(weatherData)
-            }
-           is AppState.Loading -> {
-               Toast.makeText(context, "Загрузка данных", Toast.LENGTH_LONG).show()
-               binding.loadingLayout.visibility = View.VISIBLE
+                val weatherData = appState.dataWeather
+                 binding.loadingLayout.visibility = View.GONE
+                 Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG)
+                 setData(weatherData)
+           }
+          is AppState.Loading -> {
+              Toast.makeText(context, "Загрузка данных", Toast.LENGTH_LONG).show()
+              binding.loadingLayout.visibility = View.VISIBLE
 
-            }
+           }
 
-        }
-    }
+       }
+   }
 
-    private fun setData(weatherData: Weather) {
-        binding.cityName.text = weatherData.city.name
-        binding.cityCoordinates.text = String.format(
-            getString(R.string.city_coordinates),
-            weatherData.city.lat.toString(),
-            weatherData.city.long.toString()
-        )
-        binding.temperatureValue.text = weatherData.temperature.toString()
-        binding.feelsLikeValue.text = weatherData.feelsLike.toString()
-    }*/
+   private fun setData(weatherData: Weather) {
+       binding.cityName.text = weatherData.city.name
+       binding.cityCoordinates.text = String.format(
+           getString(R.string.city_coordinates),
+           weatherData.city.lat.toString(),
+           weatherData.city.long.toString()
+       )
+       binding.temperatureValue.text = weatherData.temperature.toString()
+       binding.feelsLikeValue.text = weatherData.feelsLike.toString()
+   }*/
