@@ -8,31 +8,34 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.fragment_main.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainBinding
 import ru.moondi.kotlinweather.view.DetailsFragment
 import ru.moondi.kotlinweather.view.Weather
 import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
+import java.net.IDN
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
+    private var isDataSetRus: Boolean = true
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(weather: Weather) {
-            val manager = activity?.supportFragmentManager
-            if (manager != null) {
-                val bundle = Bundle()
-                bundle.putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
-                manager.beginTransaction()
-                    .add(R.id.fragment_conteiner, DetailsFragment.newInstance(bundle))
-                    .addToBackStack("").commitAllowingStateLoss()
+            activity?.supportFragmentManager?.apply {
+                beginTransaction()
+                    .add(R.id.fragment_conteiner, DetailsFragment.newInstance(Bundle().apply {
+                        putParcelable(DetailsFragment.BUNDLE_EXTRA, weather)
+                    }))
+                    .addToBackStack("")
+                    .commitAllowingStateLoss()
             }
         }
     })
-    private var isDataSetRus: Boolean = true
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -47,45 +50,68 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.mainFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
         viewModel.getWeatherFromLocalSourceRus()
     }
 
-    private fun changeWeatherDataSet() {
+    private fun changeWeatherDataSet() =
         if (isDataSetRus) {
             viewModel.getWeatherFromLocalSourceWorld()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
         } else {
             viewModel.getWeatherFromLocalSourceRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }
-        isDataSetRus = !isDataSetRus
-    }
+        }.also { isDataSetRus = !isDataSetRus }
 
     private fun renderData(appState: AppState) {
-        when (appState) {
-            is AppState.Succes -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
-                adapter.setWeather(appState.dataWeather)
-            }
-            is AppState.Loading -> {
-                binding.mainFragmentLoadingLayout.visibility = View.VISIBLE
-            }
-            is AppState.Error -> {
-                binding.mainFragmentLoadingLayout.visibility = View.GONE
-                Snackbar.make(
-                    binding.mainFragmentFAB,
-                    getString(R.string.error),
-                    Snackbar.LENGTH_INDEFINITE
-                ).setAction(getString(R.string.reload)) {
-                    viewModel.getWeatherFromLocalSourceRus()
-                }.show()
+        with(binding) {
+            with(mainFragmentRootView) {
+                with(mainFragmentLoadingLayout) {
+                    when (appState) {
+
+                        is AppState.Succes -> {
+                            visibility = View.GONE
+                            adapter.setWeather(appState.dataWeather)
+                            showSnackBarNoAction(R.string.success)
+                        }
+                        is AppState.Loading -> {
+                            visibility = View.VISIBLE
+                            showSnackBarNoAction(R.string.load)
+                        }
+                        is AppState.Error -> {
+                            visibility = View.GONE
+                            showSnackBar(
+                                getString(R.string.error),
+                                getString(R.string.reload),
+                                {
+                                    viewModel.getWeatherFromLocalSourceRus()
+                                })
+                        }
+                    }
+                }
+
             }
         }
 
 
     }
+
+    private fun View.showSnackBar(
+        text: String,
+        actionText: String,
+        action: (View) -> Unit,
+        length: Int = Snackbar.LENGTH_INDEFINITE
+    ) {
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
+    }
+
+    private fun View.showSnackBarNoAction(
+        resourceID: Int,
+        length: Int = Snackbar.LENGTH_SHORT
+    ) {
+        Snackbar.make(this, requireActivity().resources.getString(resourceID), length).show()
+    }
+
 
     override fun onDestroy() {
         _binding = null

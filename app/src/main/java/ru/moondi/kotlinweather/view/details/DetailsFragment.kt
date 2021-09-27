@@ -15,8 +15,6 @@ import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
 class DetailsFragment : Fragment() {
-
-    lateinit var viewModel: MainViewModel
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
 
@@ -31,18 +29,22 @@ class DetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<Weather>(BUNDLE_EXTRA)
-        if (weather != null) {
-            val city = weather.city
-            binding.cityName.text = city.name
-            binding.cityCoordinates.text = String.format(
-                getString(R.string.city_coordinates),
-                city.lat.toString(),
-                city.long.toString()
-            )
-            binding.temperatureValue.text = weather.temperature.toString()
-            binding.feelsLikeValue.text = weather.feelsLike.toString()
-
+        arguments?.getParcelable<Weather>(BUNDLE_EXTRA)?.let { weather ->
+            with(weather) {
+                val city = city
+                with(binding) {
+                    with(city) {
+                        cityName.text = name
+                        cityCoordinates.text = String.format(
+                            getString(R.string.city_coordinates),
+                            lat.toString(),
+                            long.toString()
+                        )
+                    }
+                    temperatureValue.text = temperature.toString()
+                    feelsLikeValue.text = feelsLike.toString()
+                }
+            }
         }
 
     }
@@ -56,43 +58,3 @@ class DetailsFragment : Fragment() {
         }
     }
 }
-
-/*   override fun onActivityCreated(savedInstanceState: Bundle?) {
-       super.onActivityCreated(savedInstanceState)
-       viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-       viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-       viewModel.getWeather()
-   }
-
-   private fun renderData(appState: AppState) {
-       when (appState) {
-           is AppState.Error -> {
-               Toast.makeText(context, "ошибка, данные не найдены", Toast.LENGTH_LONG).show()
-           }
-           is AppState.Succes -> {
-
-
-                val weatherData = appState.dataWeather
-                 binding.loadingLayout.visibility = View.GONE
-                 Snackbar.make(binding.mainView, "Success", Snackbar.LENGTH_LONG)
-                 setData(weatherData)
-           }
-          is AppState.Loading -> {
-              Toast.makeText(context, "Загрузка данных", Toast.LENGTH_LONG).show()
-              binding.loadingLayout.visibility = View.VISIBLE
-
-           }
-
-       }
-   }
-
-   private fun setData(weatherData: Weather) {
-       binding.cityName.text = weatherData.city.name
-       binding.cityCoordinates.text = String.format(
-           getString(R.string.city_coordinates),
-           weatherData.city.lat.toString(),
-           weatherData.city.long.toString()
-       )
-       binding.temperatureValue.text = weatherData.temperature.toString()
-       binding.feelsLikeValue.text = weatherData.feelsLike.toString()
-   }*/

@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        if (savedInstanceState == null) {
+        savedInstanceState.let{
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_conteiner, MainFragment.newInstance()).commit()
         }
