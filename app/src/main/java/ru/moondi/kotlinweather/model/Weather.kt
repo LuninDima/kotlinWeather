@@ -1,4 +1,4 @@
-package ru.moondi.kotlinweather.view
+package ru.moondi.kotlinweather.model
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

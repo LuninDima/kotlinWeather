@@ -8,14 +8,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.fragment_main.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainBinding
 import ru.moondi.kotlinweather.view.DetailsFragment
-import ru.moondi.kotlinweather.view.Weather
+import ru.moondi.kotlinweather.model.Weather
 import ru.moondi.kotlinweather.viewmodel.AppState
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
-import java.net.IDN
 
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
@@ -61,35 +59,31 @@ class MainFragment : Fragment() {
         } else {
             viewModel.getWeatherFromLocalSourceRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }.also { isDataSetRus = !isDataSetRus }
+        }.also {isDataSetRus = !isDataSetRus }
 
     private fun renderData(appState: AppState) {
         with(binding) {
-            with(mainFragmentRootView) {
-                with(mainFragmentLoadingLayout) {
-                    when (appState) {
-
-                        is AppState.Succes -> {
-                            visibility = View.GONE
-                            adapter.setWeather(appState.dataWeather)
-                            showSnackBarNoAction(R.string.success)
-                        }
-                        is AppState.Loading -> {
-                            visibility = View.VISIBLE
-                            showSnackBarNoAction(R.string.load)
-                        }
-                        is AppState.Error -> {
-                            visibility = View.GONE
-                            showSnackBar(
-                                getString(R.string.error),
-                                getString(R.string.reload),
-                                {
-                                    viewModel.getWeatherFromLocalSourceRus()
-                                })
-                        }
+            with(mainFragmentLoadingLayout) {
+                when (appState) {
+                    is AppState.Succes -> {
+                        mainFragmentLoadingLayout.visibility = View.GONE
+                        adapter.setWeather(appState.dataWeather)
+                        showSnackBarNoAction(R.string.success)
+                    }
+                    is AppState.Loading -> {
+                        mainFragmentLoadingLayout.visibility = View.VISIBLE
+                        showSnackBarNoAction(R.string.load)
+                    }
+                    is AppState.Error -> {
+                        mainFragmentLoadingLayout.visibility = View.GONE
+                        showSnackBar(
+                            getString(R.string.error),
+                            getString(R.string.reload),
+                            {
+                                viewModel.getWeatherFromLocalSourceRus()
+                            })
                     }
                 }
-
             }
         }
 
@@ -102,14 +96,14 @@ class MainFragment : Fragment() {
         action: (View) -> Unit,
         length: Int = Snackbar.LENGTH_INDEFINITE
     ) {
-        Snackbar.make(this, text, length).setAction(actionText, action).show()
+        Snackbar.make(this,text, length).setAction(actionText, action).show()
     }
 
     private fun View.showSnackBarNoAction(
         resourceID: Int,
         length: Int = Snackbar.LENGTH_SHORT
     ) {
-        Snackbar.make(this, requireActivity().resources.getString(resourceID), length).show()
+        Snackbar.make(this,requireActivity().resources.getString(resourceID), length).show()
     }
 
 

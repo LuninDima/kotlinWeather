@@ -9,6 +9,8 @@
     <string name="reload">Reload</string>
     <string name="success">Success</string>
     <string name="load">Load</string>
+    <string name="fail_connection">Fail Connection</string>
+    <string name="fail_URI">Fail URI</string>
 
 
 </resources>

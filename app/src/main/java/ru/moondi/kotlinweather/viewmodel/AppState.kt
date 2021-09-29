@@ -1,6 +1,6 @@
 package ru.moondi.kotlinweather.viewmodel
 
-import ru.moondi.kotlinweather.view.Weather
+import ru.moondi.kotlinweather.model.Weather
 
 sealed class AppState {
     data class Succes(val dataWeather: List<Weather>) : AppState()
