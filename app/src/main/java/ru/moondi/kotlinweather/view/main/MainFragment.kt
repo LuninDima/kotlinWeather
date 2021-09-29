@@ -59,7 +59,7 @@ class MainFragment : Fragment() {
         } else {
             viewModel.getWeatherFromLocalSourceRus()
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }.also {isDataSetRus = !isDataSetRus }
+        }.also { isDataSetRus = !isDataSetRus }
 
     private fun renderData(appState: AppState) {
         with(binding) {
@@ -96,14 +96,14 @@ class MainFragment : Fragment() {
         action: (View) -> Unit,
         length: Int = Snackbar.LENGTH_INDEFINITE
     ) {
-        Snackbar.make(this,text, length).setAction(actionText, action).show()
+        Snackbar.make(this, text, length).setAction(actionText, action).show()
     }
 
     private fun View.showSnackBarNoAction(
         resourceID: Int,
         length: Int = Snackbar.LENGTH_SHORT
     ) {
-        Snackbar.make(this,requireActivity().resources.getString(resourceID), length).show()
+        Snackbar.make(this, requireActivity().resources.getString(resourceID), length).show()
     }
 
 
