@@ -21,13 +21,14 @@ import ru.moondi.kotlinweather.view.details.DetailsService
 private const val TEMP_INVALID = -100
 private const val FEELS_LIKE_INVALID = -100
 private const val PROCESS_ERROR = "Обработка ошибки"
+
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var weatherBundle: Weather
-    private val loadREsultReceiver: BroadcastReceiver = object : BroadcastReceiver(){
+    private val loadREsultReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            when(intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)){
+            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
                 DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
                 DETAILS_DATA_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
                 DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
@@ -40,7 +41,7 @@ class DetailsFragment : Fragment() {
                             intent.getIntExtra(DETAILS_TEMP_EXTRA, TEMP_INVALID),
                             intent.getIntExtra(DETAILS_FEELS_LIKE_EXTRA, FEELS_LIKE_INVALID),
                             intent.getStringExtra(DETAILS_CONDITION_EXTRA)
-                            )
+                        )
                     )
                 )
                 else -> TODO(PROCESS_ERROR)
@@ -51,10 +52,13 @@ class DetailsFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context?.let {
-            LocalBroadcastManager.getInstance(it).registerReceiver(loadREsultReceiver, IntentFilter(
-                DETAILS_INTENT_FILTER))
+            LocalBroadcastManager.getInstance(it).registerReceiver(
+                loadREsultReceiver, IntentFilter(
+                    DETAILS_INTENT_FILTER
+                )
+            )
         }
-        }
+    }
 
     override fun onDestroy() {
         context?.let {
@@ -114,10 +118,11 @@ class DetailsFragment : Fragment() {
             }
         }
     }
-        override fun onDestroyView() {
-            super.onDestroyView()
-            _binding = null
-        }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
 
     companion object {
         const val BUNDLE_EXTRA = "weather"
