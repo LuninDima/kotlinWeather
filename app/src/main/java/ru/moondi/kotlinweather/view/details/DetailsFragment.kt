@@ -46,12 +46,12 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         weatherBundle = arguments?.getParcelable(BUNDLE_EXTRA) ?: Weather()
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer {
+        viewModel.detailsLiveData.observe(viewLifecycleOwner, Observer {
             renderData(it)
         })
         viewModel.getWeatherFromRemoteSource(
-            YANDEX_WEATHER_API_URL +
-                    "lat=${weatherBundle.city.lat}&lon=${weatherBundle.city.long}"
+            weatherBundle.city.lat,
+            weatherBundle.city.long
         )
     }
 
@@ -87,8 +87,8 @@ class DetailsFragment : Fragment() {
                     getString(R.string.reload),
                     {
                         viewModel.getWeatherFromRemoteSource(
-                            YANDEX_WEATHER_API_URL +
-                                    "lat =${weatherBundle.city.lat}&lon=${weatherBundle.city.long}"
+                            weatherBundle.city.lat,
+                            weatherBundle.city.long
                         )
                     }
                 )
