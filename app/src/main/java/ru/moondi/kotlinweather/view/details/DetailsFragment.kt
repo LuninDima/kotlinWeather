@@ -18,6 +18,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.gson.Gson
+import com.squareup.picasso.Picasso
+import kotlinx.android.synthetic.main.fragment_details.*
 import okhttp3.*
 import ru.moondi.kotlinweather.BuildConfig
 import ru.moondi.kotlinweather.R
@@ -107,6 +109,8 @@ class DetailsFragment : Fragment() {
         binding.temperatureValue.text = weather.temperature.toString()
         binding.feelsLikeValue.text = weather.feelsLike.toString()
         binding.weatherCondition.text = weather.condition
+
+        Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png").into(headerIcon)
     }
 
     override fun onDestroyView() {
