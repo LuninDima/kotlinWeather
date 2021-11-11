@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
@@ -18,6 +19,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import coil.api.load
+import com.github.twocoffeesoneteam.glidetovectoryou.GlideToVectorYou
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -26,6 +28,7 @@ import ru.moondi.kotlinweather.BuildConfig
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentDetailsBinding
 import ru.moondi.kotlinweather.model.*
+import ru.moondi.kotlinweather.utils.CircleTransformation
 import ru.moondi.kotlinweather.utils.showSnackBar
 import ru.moondi.kotlinweather.view.details.DetailsService
 import ru.moondi.kotlinweather.viewmodel.AppState
@@ -111,9 +114,20 @@ class DetailsFragment : Fragment() {
         binding.feelsLikeValue.text = weather.feelsLike.toString()
         binding.weatherCondition.text = weather.condition
 
-        // Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png").into(headerIcon)
+        Picasso.get()
+            .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+            .transform(CircleTransformation())
+            .into(headerIcon)
 
-        headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+            //headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+
+        weather.icon?.let {
+            GlideToVectorYou.justLoadImage(
+                activity,
+                Uri.parse("https://yastatic.net/weather/i/icons/blueye/color/svg/${it}.svg"),
+                weatherIcon
+            )
+        }
     }
 
     override fun onDestroyView() {
