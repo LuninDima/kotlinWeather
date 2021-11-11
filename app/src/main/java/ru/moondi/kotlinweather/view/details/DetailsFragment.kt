@@ -17,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import coil.api.load
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_details.*
@@ -110,7 +111,9 @@ class DetailsFragment : Fragment() {
         binding.feelsLikeValue.text = weather.feelsLike.toString()
         binding.weatherCondition.text = weather.condition
 
-        Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png").into(headerIcon)
+        // Picasso.get().load("https://freepngimg.com/thumb/city/36275-3-city-hd.png").into(headerIcon)
+
+        headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
     }
 
     override fun onDestroyView() {
