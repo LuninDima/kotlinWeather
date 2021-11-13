@@ -28,43 +28,10 @@ import ru.moondi.kotlinweather.BuildConfig
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentDetailsBinding
 import ru.moondi.kotlinweather.model.*
-import ru.moondi.kotlinweather.utils.CircleTransformation
 import ru.moondi.kotlinweather.utils.showSnackBar
 import ru.moondi.kotlinweather.utils.translation
-import ru.moondi.kotlinweather.view.details.DetailsService
-import ru.moondi.kotlinweather.viewmodel.AppState
+import ru.moondi.kotlinweather.viewmodel.AppStateDetailsFragment
 import ru.moondi.kotlinweather.viewmodel.DetailsViewModel
-import java.io.IOException
-
-private const val TEMP_INVALID = -100
-private const val FEELS_LIKE_INVALID = -100
-private const val PROCESS_ERROR = "Обработка ошибки"
-
-private val translations = mapOf(
-    "clear" to "Ясно",
-    "partly-cloudy" to "Малооблачно",
-    "cloudy" to "Облачно с прояснениями",
-    "overcast" to "Пасмурно",
-    "drizzle" to "Морось",
-    "light-rain" to "Небольшой дождь",
-    "rain" to "Дождь",
-    "moderate-rain" to "Умеренно сильный дождь",
-    "heavy-rain" to "Сильный дождь",
-    "continuous-heavy-rain" to "Длительный сильный дождь",
-    "showers" to "Ливень",
-    "wet-snow" to "Дождь со снегом",
-    "light-snow" to "Небольшой снег",
-    "snow" to "Снег",
-    "snow-showers" to "Снегопад",
-    "hail" to "Град",
-    "thunderstorm" to "Гроза",
-    "thunderstorm-with-rain" to "Дождь с грозой",
-    "thunderstorm-with-hail" to "Гроза с градом",
-    "night" to "Ночь",
-    "morning" to "Утро",
-    "day" to "День",
-    "evening" to "вечер"
-)
 
 class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
@@ -101,18 +68,18 @@ class DetailsFragment : Fragment() {
         return binding.root
     }
 
-    private fun renderData(appState: AppState) {
+    private fun renderData(appState: AppStateDetailsFragment) {
         when (appState) {
-            is AppState.Succes -> {
+            is AppStateDetailsFragment.Success -> {
                 binding.mainView.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
-                setWeater(appState.dataWeather[0])
+                setWeater(appState.dataWeather)
             }
-            is AppState.Loading -> {
+            is AppStateDetailsFragment.Loading -> {
                 binding.mainView.visibility = View.GONE
                 binding.loadingLayout.visibility = View.VISIBLE
             }
-            is AppState.Error -> {
+            is AppStateDetailsFragment.Error -> {
                 binding.mainView.visibility = View.VISIBLE
                 binding.loadingLayout.visibility = View.GONE
                 binding.mainView.showSnackBar(
@@ -143,19 +110,20 @@ class DetailsFragment : Fragment() {
         binding.weatherCondition.text = condition
 
 
+        /* Picasso.get()
+             .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+             .transform(CircleTransformation())
+             .into(binding.headerIcon)*/
 
-        Picasso.get()
-            .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-            .transform(CircleTransformation())
-            .into(headerIcon)
-
-            //headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
-
+        headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png") {
+            placeholder(R.drawable.ic_earth)
+            error(R.drawable.ic_earth)
+        }
         weather.icon?.let {
             GlideToVectorYou.justLoadImage(
                 activity,
                 Uri.parse("https://yastatic.net/weather/i/icons/blueye/color/svg/${it}.svg"),
-                weatherIcon
+                binding.weatherIcon
             )
         }
     }

@@ -5,7 +5,7 @@ import ru.moondi.kotlinweather.model.Weather
 import ru.moondi.kotlinweather.model.WeatherDTO
 import ru.moondi.kotlinweather.model.getDefaultCity
 
-fun convertDtoToModel(weatherDTO: WeatherDTO): List<Weather> {
+fun convertDtoToModel(weatherDTO: WeatherDTO): Weather {
     val fact: FactDTO = weatherDTO.fact!!
-    return listOf(Weather(getDefaultCity(), fact.temp!!, fact.feels_like!!, fact.condition!!, fact.icon))
+    return Weather(getDefaultCity(), fact.temp!!, fact.feels_like!!, fact.condition!!, fact.icon)
 }

@@ -11,7 +11,7 @@ import java.lang.Thread.sleep
 import kotlin.random.Random
 
 class MainViewModel(
-    private val liveDataObserver: MutableLiveData<AppState> = MutableLiveData(),
+    private val liveDataObserver: MutableLiveData<AppStateMainFragment> = MutableLiveData(),
     private val repositroryImpl: Repositrory = RepositoryImpl()
 ) : ViewModel() {
     fun getLiveData() = liveDataObserver
@@ -20,11 +20,11 @@ class MainViewModel(
     fun getWeatherFromRemotesource() = getDataFromLocalSource(isRussian = true)
 
     fun getDataFromLocalSource(isRussian: Boolean) {
-        liveDataObserver.value = AppState.Loading
+        liveDataObserver.value = AppStateMainFragment.Loading
         Thread {
             sleep(1000)
             liveDataObserver.postValue(
-                AppState.Succes(
+                AppStateMainFragment.Success(
                     if (isRussian) repositroryImpl.getWeatherFromLocalStorageRus()
                     else repositroryImpl.getWeatherFromLocalStorageWorld()
                 )

@@ -12,7 +12,7 @@ import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainBinding
 import ru.moondi.kotlinweather.view.DetailsFragment
 import ru.moondi.kotlinweather.model.Weather
-import ru.moondi.kotlinweather.viewmodel.AppState
+import ru.moondi.kotlinweather.viewmodel.AppStateMainFragment
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
 class MainFragment : Fragment() {
@@ -61,20 +61,20 @@ class MainFragment : Fragment() {
             binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
         }.also { isDataSetRus = !isDataSetRus }
 
-    private fun renderData(appState: AppState) {
+    private fun renderData(appState: AppStateMainFragment) {
         with(binding) {
             with(mainFragmentLoadingLayout) {
                 when (appState) {
-                    is AppState.Succes -> {
+                    is AppStateMainFragment.Success -> {
                         mainFragmentLoadingLayout.visibility = View.GONE
                         adapter.setWeather(appState.dataWeather)
                         showSnackBarNoAction(R.string.success)
                     }
-                    is AppState.Loading -> {
+                    is AppStateMainFragment.Loading -> {
                         mainFragmentLoadingLayout.visibility = View.VISIBLE
                         showSnackBarNoAction(R.string.load)
                     }
-                    is AppState.Error -> {
+                    is AppStateMainFragment.Error -> {
                         mainFragmentLoadingLayout.visibility = View.GONE
                         showSnackBar(
                             getString(R.string.error),
