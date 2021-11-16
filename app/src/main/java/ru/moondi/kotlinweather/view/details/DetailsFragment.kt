@@ -128,6 +128,12 @@ class DetailsFragment : Fragment() {
         }
     }
 
+    private fun saveCity(city: City, weather: Weather) {
+        viewModel.saveCityToDB(
+            Weather(city, weather.temperature, weather.feelsLike, weather.condition)
+        )
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

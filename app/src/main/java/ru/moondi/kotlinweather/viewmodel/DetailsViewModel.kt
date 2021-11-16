@@ -5,12 +5,13 @@ import androidx.lifecycle.ViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import ru.moondi.kotlinweather.app.App.Companion.getHistoryDao
+import ru.moondi.kotlinweather.model.Weather
 import ru.moondi.kotlinweather.model.WeatherDTO
-import ru.moondi.kotlinweather.repository.DetailsRepository
-import ru.moondi.kotlinweather.repository.DetailsRepositoryImpl
-import ru.moondi.kotlinweather.repository.RemoteDataSource
+import ru.moondi.kotlinweather.repository.*
 import java.io.IOException
 import ru.moondi.kotlinweather.utils.convertDtoToModel
+import java.nio.file.WatchEvent
 
 private const val SERVER_ERROR = "Ошибка сервера"
 private const val REQUEST_ERROR = "Ошибка запроса на сервер"
@@ -18,12 +19,17 @@ private const val CORRUPTED_DATA = "Неполные данные"
 
 class DetailsViewModel(
      val detailsLiveData: MutableLiveData<AppStateDetailsFragment> = MutableLiveData(),
-    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource())
+    private val detailsRepositoryImpl: DetailsRepository = DetailsRepositoryImpl(RemoteDataSource()),
+     private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 ) : ViewModel() {
 
     fun getWeatherFromRemoteSource(lat: Double, lon: Double) {
         detailsLiveData.value = AppStateDetailsFragment.Loading
         detailsRepositoryImpl.getWeatherDetailsFromServer(lat, lon, callBack)
+    }
+
+    fun saveCityToDB(weather: Weather){
+        historyRepository.saveEntity(weather)
     }
 
     private val callBack = object : Callback<WeatherDTO> {
