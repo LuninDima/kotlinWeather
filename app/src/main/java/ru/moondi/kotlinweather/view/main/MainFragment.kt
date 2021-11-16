@@ -1,5 +1,6 @@
 package ru.moondi.kotlinweather.view.main
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +16,13 @@ import ru.moondi.kotlinweather.model.Weather
 import ru.moondi.kotlinweather.viewmodel.AppStateMainFragment
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
+private const val IS_WORLD_KEY = "LIST_OF_TOWNS_KEY"
 class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel: MainViewModel by lazy { ViewModelProvider(this).get(MainViewModel::class.java) }
-    private var isDataSetRus: Boolean = true
+    private var isDataSetWorld: Boolean = false
     private val adapter = MainFragmentAdapter(object : OnItemViewClickListener {
         override fun onItemViewClick(weather: Weather) {
             activity?.supportFragmentManager?.apply {
@@ -49,34 +51,58 @@ class MainFragment : Fragment() {
         binding.mainFragmentRecyclerView.adapter = adapter
         binding.mainFragmentFAB.setOnClickListener { changeWeatherDataSet() }
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer { renderData(it) })
-        viewModel.getWeatherFromLocalSourceRus()
+        // viewModel.getWeatherFromLocalSourceRus()
+        showListOfTowns()
     }
 
-    private fun changeWeatherDataSet() =
-        if (isDataSetRus) {
-            viewModel.getWeatherFromLocalSourceWorld()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
-        } else {
-            viewModel.getWeatherFromLocalSourceRus()
-            binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
-        }.also { isDataSetRus = !isDataSetRus }
+    private fun showListOfTowns() {
+        activity?.let {
+            if (it.getPreferences(Context.MODE_PRIVATE).getBoolean(IS_WORLD_KEY, false)) {
+                changeWeatherDataSet()
+            } else {
+                viewModel.getWeatherFromLocalSourceRus()
+            }
+        }
+    }
 
+    private fun changeWeatherDataSet() {
+    if (isDataSetWorld)
+    {
+        viewModel.getWeatherFromLocalSourceRus()
+        binding.mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+    } else
+    {
+        viewModel.getWeatherFromLocalSourceWorld()
+        binding.mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+    }
+    isDataSetWorld = !isDataSetWorld
+    saveListOfTowns(isDataSetWorld)
+}
+
+    private fun saveListOfTowns(isDataSetWorld: Boolean) {
+        activity?.let {
+            with(it.getPreferences(Context.MODE_PRIVATE).edit()){
+                putBoolean(IS_WORLD_KEY, isDataSetWorld)
+                apply()
+            }
+        }
+    }
     private fun renderData(appState: AppStateMainFragment) {
         with(binding) {
-            with(mainFragmentLoadingLayout) {
+            with(includedLoadingLayout) {
                 when (appState) {
                     is AppStateMainFragment.Success -> {
-                        mainFragmentLoadingLayout.visibility = View.GONE
+                        loadingLayout.visibility = View.GONE
                         adapter.setWeather(appState.dataWeather)
-                        showSnackBarNoAction(R.string.success)
+                        loadingLayout.showSnackBarNoAction(R.string.success)
                     }
                     is AppStateMainFragment.Loading -> {
-                        mainFragmentLoadingLayout.visibility = View.VISIBLE
-                        showSnackBarNoAction(R.string.load)
+                        loadingLayout.visibility = View.VISIBLE
+                        loadingLayout.showSnackBarNoAction(R.string.load)
                     }
                     is AppStateMainFragment.Error -> {
-                        mainFragmentLoadingLayout.visibility = View.GONE
-                        showSnackBar(
+                        loadingLayout.visibility = View.GONE
+                        loadingLayout.showSnackBar(
                             getString(R.string.error),
                             getString(R.string.reload),
                             {
