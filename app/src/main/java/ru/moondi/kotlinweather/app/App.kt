@@ -1,6 +1,7 @@
 package ru.moondi.kotlinweather.app
 
 import android.app.Application
+import android.os.HandlerThread
 import androidx.room.Room
 import ru.moondi.kotlinweather.room.HistoryDao
 import ru.moondi.kotlinweather.room.HistoryDataBase
@@ -19,6 +20,7 @@ class App: Application() {
 
         fun getHistoryDao(): HistoryDao{
             if(db == null){
+
                 synchronized(HistoryDataBase::class.java){
                     if (db == null){
                         if (appInstance == null) throw

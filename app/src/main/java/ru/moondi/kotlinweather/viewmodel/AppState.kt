@@ -2,10 +2,10 @@ package ru.moondi.kotlinweather.viewmodel
 
 import ru.moondi.kotlinweather.model.Weather
 
-sealed class AppStateMainFragment{
-    data class Success(val dataWeather: List<Weather>): AppStateMainFragment()
-    object Loading: AppStateMainFragment()
-    data class Error(val error: Throwable) : AppStateMainFragment()
+sealed class AppStateList {
+    data class Success(val dataWeather: List<Weather>) : AppStateList()
+    data class Error(val error: Throwable) : AppStateList()
+    object Loading : AppStateList()
 }
 
 sealed class AppStateDetailsFragment {

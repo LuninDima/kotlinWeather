@@ -13,7 +13,7 @@ import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainBinding
 import ru.moondi.kotlinweather.view.DetailsFragment
 import ru.moondi.kotlinweather.model.Weather
-import ru.moondi.kotlinweather.viewmodel.AppStateMainFragment
+import ru.moondi.kotlinweather.viewmodel.AppStateList
 import ru.moondi.kotlinweather.viewmodel.MainViewModel
 
 private const val IS_WORLD_KEY = "LIST_OF_TOWNS_KEY"
@@ -87,20 +87,20 @@ class MainFragment : Fragment() {
             }
         }
     }
-    private fun renderData(appState: AppStateMainFragment) {
+    private fun renderData(appState: AppStateList) {
         with(binding) {
             with(includedLoadingLayout) {
                 when (appState) {
-                    is AppStateMainFragment.Success -> {
+                    is AppStateList.Success -> {
                         loadingLayout.visibility = View.GONE
                         adapter.setWeather(appState.dataWeather)
                         loadingLayout.showSnackBarNoAction(R.string.success)
                     }
-                    is AppStateMainFragment.Loading -> {
+                    is AppStateList.Loading -> {
                         loadingLayout.visibility = View.VISIBLE
                         loadingLayout.showSnackBarNoAction(R.string.load)
                     }
-                    is AppStateMainFragment.Error -> {
+                    is AppStateList.Error -> {
                         loadingLayout.visibility = View.GONE
                         loadingLayout.showSnackBar(
                             getString(R.string.error),

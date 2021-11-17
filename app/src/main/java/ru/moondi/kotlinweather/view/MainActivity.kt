@@ -2,8 +2,13 @@ package ru.moondi.kotlinweather.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.TextUtils.replace
+import android.view.Menu
+import android.view.MenuItem
+import kotlinx.android.synthetic.main.fragment_history.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.ActivityMainBinding
+import ru.moondi.kotlinweather.view.history.HistoryFragment
 import ru.moondi.kotlinweather.view.main.MainFragment
 
 class MainActivity : AppCompatActivity() {
@@ -12,9 +17,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        savedInstanceState.let{
+        savedInstanceState.let {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_conteiner, MainFragment.newInstance()).commitAllowingStateLoss()
+                .replace(R.id.fragment_conteiner, MainFragment.newInstance())
+                .commitAllowingStateLoss()
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_screen_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.menu_history -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.fragment_conteiner, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 }

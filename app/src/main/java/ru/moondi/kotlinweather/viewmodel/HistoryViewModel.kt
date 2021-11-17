@@ -7,13 +7,13 @@ import ru.moondi.kotlinweather.repository.LocalRepository
 import ru.moondi.kotlinweather.repository.LocalRepositoryImpl
 
 class HistoryViewModel(
-    private val historyLiveData: MutableLiveData<AppStateMainFragment> = MutableLiveData(),
+     val historyLiveData: MutableLiveData<AppStateList> = MutableLiveData(),
     private val historyRepository: LocalRepository = LocalRepositoryImpl(getHistoryDao())
 ) : ViewModel() {
 
     fun getAllHistory() {
-        historyLiveData.value = AppStateMainFragment.Loading
-        historyLiveData.value = AppStateMainFragment.Success(historyRepository.getAllHistory())
+        historyLiveData.value = AppStateList.Loading
+        historyLiveData.value = AppStateList.Success(historyRepository.getAllHistory())
     }
 
 }
