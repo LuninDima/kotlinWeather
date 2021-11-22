@@ -40,8 +40,8 @@ class ContentProvider : ContentProvider() {
     ): Cursor? {
         val historyDao: HistoryDao = getHistoryDao()
         val cursor = when (uriMatcher.match(uri)) {
-            URI_ALL -> historyDao.getHistoryCursor()
-            URI_ALL -> {
+            URI_ALL -> historyDao.getHistoryCursor() // Запрос к базе данных для всех элементов
+            URI_ID -> {
                 val id = ContentUris.parseId(uri)
                 historyDao.getHistoryCursor(id)
             }
@@ -64,12 +64,10 @@ class ContentProvider : ContentProvider() {
         { "Wrong URI: $uri" }
         val historyDao = getHistoryDao()
         val id = ContentUris.parseId(uri)
-        historyDao.deleteBiId(id)
+        historyDao.deleteById(id)
         context?.contentResolver?.notifyChange(uri, null)
-        return URI_ALL
+        return 1
     }
-
-
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         require(uriMatcher.match(uri) == URI_ALL)
         { "Wrong URI: $uri" }
@@ -82,7 +80,6 @@ class ContentProvider : ContentProvider() {
         return resultUri
     }
 
-
     override fun update(
         uri: Uri, values: ContentValues?, selection: String?,
         selectionArgs: Array<String>?
@@ -92,7 +89,7 @@ class ContentProvider : ContentProvider() {
         val historyDao = getHistoryDao()
         historyDao.update(map(values))
         context!!.contentResolver.notifyChange(uri, null)
-        return URI_ALL
+        return 1
     }
 
     private fun map(values: ContentValues?): HistoryEntity {
@@ -103,7 +100,6 @@ class ContentProvider : ContentProvider() {
             val city = values[CITY] as String
             val temperature = values[TEMPERATURE] as Int
             HistoryEntity(id, city, temperature)
-
         }
     }
 }
