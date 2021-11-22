@@ -1,7 +1,6 @@
 package ru.moondi.kotlinweather.app
 
 import android.app.Application
-import android.os.HandlerThread
 import androidx.room.Room
 import ru.moondi.kotlinweather.room.HistoryDao
 import ru.moondi.kotlinweather.room.HistoryDataBase

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.text.TextUtils.replace
 import android.view.Menu
 import android.view.MenuItem
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_history.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.ActivityMainBinding
+import ru.moondi.kotlinweather.view.contentProvider.ContentProviderFragment
 import ru.moondi.kotlinweather.view.history.HistoryFragment
 import ru.moondi.kotlinweather.view.main.MainFragment
 
@@ -35,6 +37,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.fragment_conteiner, HistoryFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_content_provider -> {
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.fragment_conteiner, ContentProviderFragment.newInstance())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }

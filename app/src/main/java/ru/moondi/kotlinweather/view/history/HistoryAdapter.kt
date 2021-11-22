@@ -45,6 +45,7 @@ class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.RecyclerItemViewHolder
                     String.format("%s %d %s", data.city.name, data.temperature, condition)
                 itemView.setOnClickListener {
                     Toast.makeText(itemView.context, "on click: ${data.city.name}", Toast.LENGTH_SHORT).show()
+
                 }
             }
         }

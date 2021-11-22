@@ -11,6 +11,7 @@
     <string name="load">Load</string>
     <string name="fail_connection">Fail Connection</string>
     <string name="fail_URI">Fail URI</string>
+    <string name="content_provider">Provider</string>
 
 
 </resources>
