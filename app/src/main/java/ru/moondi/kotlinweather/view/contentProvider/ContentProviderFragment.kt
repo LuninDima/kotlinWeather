@@ -1,4 +1,4 @@
-package ru.moondi.kotlinweather.view.contentProvider
+    package ru.moondi.kotlinweather.view.contentProvider
 
 import android.Manifest
 import android.app.AlertDialog
@@ -106,8 +106,8 @@ class ContentProviderFragment : Fragment() {
             )
 
             cursorWithContacts?.let { cursor ->
-                for (i in 0..cursor.count) {
-                    if (cursor.moveToPosition(i)) {
+                for (index1 in 0..cursor.count) {
+                    if (cursor.moveToPosition(index1)) {
                         val nameContact =
                             cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                         addView(it, nameContact)
