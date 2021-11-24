@@ -10,6 +10,7 @@ import kotlinx.android.synthetic.main.fragment_history.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.ActivityMainBinding
 import ru.moondi.kotlinweather.view.contentProvider.ContentProviderFragment
+import ru.moondi.kotlinweather.view.details.MapsFragment
 import ru.moondi.kotlinweather.view.history.HistoryFragment
 import ru.moondi.kotlinweather.view.main.MainFragment
 
@@ -46,6 +47,15 @@ class MainActivity : AppCompatActivity() {
                 supportFragmentManager.apply {
                     beginTransaction()
                         .add(R.id.fragment_conteiner, ContentProviderFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
+            R.id.menu_google_maps ->{
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.fragment_conteiner,MapsFragment())
                         .addToBackStack("")
                         .commitAllowingStateLoss()
                 }
