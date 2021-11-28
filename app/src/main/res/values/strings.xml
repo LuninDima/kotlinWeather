@@ -14,5 +14,9 @@
     <string name="content_provider">Provider</string>
     <string name="authorities">moondi.provider</string>
 
+    <string name="default_address">Lenina Square, 1, Ulyanovsk</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
+
 
 </resources>
