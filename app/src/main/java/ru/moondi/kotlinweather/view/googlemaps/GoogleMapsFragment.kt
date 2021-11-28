@@ -1,6 +1,7 @@
 package ru.moondi.kotlinweather.view.googlemaps
 
-import android.graphics.Camera
+import android.Manifest
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.location.Address
 import android.location.Geocoder
@@ -10,14 +11,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.TypedArrayUtils.getString
+import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.*
 
 import kotlinx.android.synthetic.main.fragment_main_maps.*
 import ru.moondi.kotlinweather.R
 import ru.moondi.kotlinweather.databinding.FragmentMainMapsBinding
-import ru.moondi.kotlinweather.databinding.FragmentMapsBinding
 import java.io.IOException
 
 class GoogleMapsFragment : Fragment() {
@@ -39,6 +39,7 @@ class GoogleMapsFragment : Fragment() {
             drawLine()
 
         }
+        activateMyLocation(googleMap)
     }
 
     override fun onCreateView(
@@ -138,6 +139,16 @@ class GoogleMapsFragment : Fragment() {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(
                 location, 15f
             ))
+        }
+    }
+
+    private fun activateMyLocation(googleMap: GoogleMap) {
+        context?.let {
+            val isPermissionGranted =
+                ContextCompat.checkSelfPermission(it, Manifest.permission.ACCESS_FINE_LOCATION) ==
+                        PackageManager.PERMISSION_GRANTED
+            googleMap.isMyLocationEnabled = isPermissionGranted
+            googleMap.uiSettings.isMyLocationButtonEnabled = isPermissionGranted
         }
     }
 }
