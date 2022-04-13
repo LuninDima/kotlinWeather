@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="city_name_margin_top">50dp</dimen>
+    <dimen name="town_header_height">100dp</dimen>
     <dimen name="margin_15_dp">15dp</dimen>
     <dimen name="temperature_value_text_size">40sp</dimen>
     <dimen name="feels_like_text_size">30sp</dimen>
+    <dimen name="fab_icon_size">56dp</dimen>
+    <dimen name="fab_margin">15dp</dimen>
+    <dimen name="recycler_item_padding">10dp</dimen>
+    <dimen name="recycler_item_text_size">25sp</dimen>
+    <dimen name="recycler_item_line_height">1dp</dimen>
+    <dimen name="recycler_item_line_margin_end">20dp</dimen>
+    <dimen name="main_container_text_size">25sp</dimen>
+
+    <dimen name="weather_icon_width">150dp</dimen>
+    <dimen name="weather_icon_height">150dp</dimen>
+    <dimen name="weather_icon_margin">110dp</dimen>
+
+    <string name="menu_title_history">history</string>
+
+    <dimen name="hairline">1dp</dimen>
+    <dimen name="margin_5_dp">5dp</dimen>
+    <dimen name="fab_location_icon_size">56dp</dimen>
+
+    <string name="dialog_button_close">Закрыть</string>
+    <string name="dialog_title_no_gps">Доступ к геолокации закрыт</string>
+    <string name="dialog_message_no_gps">Разрешите доступ к геолокации, если хотите узнать погоду текущего места</string>
+    <string name="dialog_title_gps_turned_off">GPS отключён</string>
+    <string name="dialog_message_last_location_unknown">Местонахождение неизвестно. Включите GPS, если хотите получить погоду по текущему адресу</string>
+    <string name="dialog_message_last_known_location">Показана последняя известная локация. Включите GPS, если хотите обновить местонахождение</string>
+    <string name="dialog_rationale_title">Доступ к геолокации</string>
+    <string name="dialog_rationale_meaasge">Объяснение</string>
+    <string name="dialog_rationale_give_access">Предоставить доступ</string>
+    <string name="dialog_rationale_decline">Не надо</string>
+    <string name="dialog_address_title">Ваш адрес</string>
+    <string name="dialog_address_get_weather">Узнать погоду</string>
+
 </resources>
