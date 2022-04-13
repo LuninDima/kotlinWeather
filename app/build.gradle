@@ -28,8 +28,8 @@ android {
 
     buildTypes.each {
         Properties properties = new Properties()
-        properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-        def apiKey  = properties.getProperty("MY_YANDEX_API_KEY_VALUE", "")
+       properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
+       def apiKey  = properties.getProperty("MY_YANDEX_API_KEY_VALUE", "")
         it.buildConfigField "String", "MY_YANDEX_API_KEY_VALUE", apiKey
     }
     compileOptions {
